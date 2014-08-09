@@ -10,6 +10,7 @@ ctp
 ### 资料
 * https://github.com/zaviichen/pheux
 * https://github.com/lovelylain/pyctp
+* https://code.google.com/p/pyctp/
 
 ### 书目
 #### <<期货市场技术分析>>
