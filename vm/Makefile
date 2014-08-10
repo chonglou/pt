@@ -19,7 +19,7 @@ cc = clang
 tools = count calculator
 
 $(filter %, $(tools)): %: src/tools/%.l
-	bison -b objs/$@ -d src/tools/$@.y
+	#bison -b objs/$@ -d src/tools/$@.y
 	flex -o objs/$@.yy.c src/tools/$@.l
 	$(cc) -o bin/$@ -lfl objs/$@.yy.c
 
