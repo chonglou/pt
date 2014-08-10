@@ -1,32 +1,16 @@
+cc = g++
 
-objects = main.o command.o display.o log.o
-cc = clang
-
-
-#all:
-#	echo ''
+all: pt
 
 
-
-#vm: $(objects)
-#	cc -o pt $(objects)
-
-
-#$(filter %.o, $(objects)): %.o: %.c %.h
-#	$(CC) -c $(CFLAGS) $< -o $@
-
-#-------------tools
-tools = count calculator
-
-$(filter %, $(tools)): %: src/tools/%.l
-	#bison -b objs/$@ -d src/tools/$@.y
-	flex -o objs/$@.yy.c src/tools/$@.l
-	$(cc) -o bin/$@ -lfl objs/$@.yy.c
+pt: ctx.hh pt.l pt.yy
+	bison -b objs/$@ -d $@.yy
+	flex -o objs/$@.yy.c $@.l
+	$(cc) -s -I. -o bin/$@  objs/$@.yy.c objs/$@.tab.cc
 
 
-#-------------others
-.PHONY: clean
+
 clean:
-	--rm pt $(objects)
+	-rm objs/* bin/*
 
 
