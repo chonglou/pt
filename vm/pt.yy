@@ -8,6 +8,7 @@
 %{
 #include <iostream>
 #include "ctx.hh"
+#include "utils.hh"
 %}
 
 %parse-param { pt::vm_ctx &ctx }
@@ -27,7 +28,6 @@
 
 %{
 extern int yylex(pt::vm_parser::semantic_type *yylval, pt::vm_parser::location_type* yylloc, pt::vm_ctx &ctx);
-void myout(int val, int radix);
 %}
 
 %initial-action {
@@ -37,7 +37,7 @@ void myout(int val, int radix);
 %%
 
 vmlist:
-	| vmlist exp EOL { std::cout << "="; myout(ctx.getradix(), $2); std::cout << "\n> "; }
+	| vmlist exp EOL { std::cout << "="; pt::cout(ctx.getradix(), $2); std::cout << "\n> "; }
 	| vmlist EOL { std::cout << "> "; }
 ;
 
@@ -67,26 +67,6 @@ int main() {
 	std::cout << "> ";
 	pt::vm_parser parser(ctx);
 	int v = parser.parse();
-	return v;
-}
-
-void myout(int radix, int val) {
-	if(val < 0) {
-		std::cout << "-";
-		val = -val;
-	}
-	if(val > radix) {
-		myout(radix, val/radix);
-		val %= radix;
-	}
-	std::cout << val;
-}
-
-int myatoi(int radix, char *s) {
-	int v = 0;
-	while(*s) {
-		v = v*radix + *s++ - '0';
-	}
 	return v;
 }
 
