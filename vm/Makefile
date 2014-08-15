@@ -1,12 +1,16 @@
-cc = g++
+cc = gcc
+#cc = clang
+
+cflags = -O2 -s -I.
+#cflags = -I.
 
 all: pt
 
 
-pt: pt.l pt.yy ctx.hh utils.hh utils.cc
-	bison -b objs/$@ -d pt.yy
-	flex -o objs/$@.yy.c pt.l
-	$(cc) -O2 -s -I. -o bin/$@  objs/$@.yy.c objs/$@.tab.cc utils.cc
+pt: pt.l pt.y pt.h main.c utils.c
+	bison -b objs/$@ -d $@.y
+	flex -o objs/$@.lex.c $@.l
+	$(cc) $(cflags) -o bin/$@  objs/$@.tab.c objs/$@.lex.c main.c utils.c
 
 
 
