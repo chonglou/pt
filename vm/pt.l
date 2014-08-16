@@ -43,7 +43,7 @@ EXP ([Ee][-+]?[0-9]+)
 [a-zA-Z][a-zA-Z0-9]* { yylval.s = lookup(yytext); return NAME; }
 
 [0-9]+"."[0-9]*{EXP}? |
-"."?[0-9]+{EXP}? { yylval.val = atof(yytext); return NUMBER; }
+"."?[0-9]+{EXP}? { yylval.v = atof(yytext); return NUMBER; }
 
 
 "//".*

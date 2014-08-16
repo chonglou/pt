@@ -6,18 +6,18 @@
 
 %union {
 struct ast* a;
-double d;
+double v;
 struct symbol* s;
 struct symlist *sl;
 int fn;
 }
 
-%token <d> NUMBER
+%token <v> NUMBER
 %token <s> NAME
 %token <fn> FUNC
 %token EOL
 
-%token IF THEN ELSE WHILD DO DEF
+%token IF THEN ELSE WHILE DO DEF
 
 %nonassoc <fn> CMP
 %right '='
@@ -33,7 +33,7 @@ int fn;
 %%
 stmt: IF exp THEN list { $$ = new_flow('I', $2, $4, NULL); }
 	| IF exp THEN list ELSE list { $$ = new_flow('I', $2, $4, $6); }
-	| WHILE exp D) list { $$ = new_flow('W', $2, $4, NULL); }
+	| WHILE exp DO list { $$ = new_flow('W', $2, $4, NULL); }
 	| exp
 ;
 
@@ -50,7 +50,7 @@ exp: exp CMP exp { $$ = new_cmp($2, $1, $3); }
 	| exp '-' exp { $$ = new_ast('-', $1, $3); }
 	| exp '*' exp { $$ = new_ast('*', $1, $3); }
 	| exp '/' exp { $$ = new_ast('/', $1, $3); }
-	| exp '|' exp { $$ = new_ast('|', $2, NULL); }
+	| '|' exp { $$ = new_ast('|', $2, NULL); }
 	| '(' exp ')' { $$ = $2; }
 	| '-' exp %prec UMINUS { $$ = new_ast('M', $2, NULL); }
 	| NUMBER { $$ = new_num($1); }
@@ -65,7 +65,7 @@ explist: exp
 ;
 
 symlist: NAME { $$ = new_symlist($1, NULL); }
-	| NAME ',', symlist { $$ = new_symlist($1, $3); }
+	| NAME ',' symlist { $$ = new_symlist($1, $3); }
 ;
 
 
@@ -82,20 +82,5 @@ pt_list:
 	| pt_list error EOL { yyerrok; printf("> "); }
 	;
 
-exp: factor
-	| exp '+' factor {$$ = new_ast('+', $1, $3); }
-	| exp '-' factor {$$ = new_ast('-', $1, $3); }
-	;
-
-factor: term
-	| factor '*' term {$$ = new_ast('*', $1, $3); }
-	| factor '/' term {$$ = new_ast('*', $1, $3); }
-	;
-
-term: NUMBER { $$ = new_num($1); }
-	| '|' term { $$ = new_ast('|', $2, NULL); }
-	| '(' exp ')' { $$ = $2; }
-	| '-' term { $$ = new_ast('M', $2, NULL); }
-	;
 %%
 

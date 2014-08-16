@@ -8,7 +8,7 @@ struct symbol {
 
 #define NHASH 9997
 struct symbol symtab[NHASH];
-struct symbol* lookup(char* key);
+struct symbol* lookup(char* sym);
 
 struct symlist {
 	struct symbol* sym;
@@ -38,7 +38,7 @@ enum bifs {
 	B_exp,
 	B_log,
 	B_print
-}
+};
 
 struct ast {
 	int t;

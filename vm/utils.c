@@ -23,7 +23,7 @@ inline void check_mem(void* p) {
 	}
 }
 
-struct symbol* lookup(char* key) {
+struct symbol* lookup(char* sym) {
 	struct symbol* sp = &symtab[symhash(sym) % NHASH];
 	int scount = NHASH;
 
@@ -93,7 +93,7 @@ struct ast* new_ref(struct symbol* s) {
 }
 
 
-struct ast* new_symlist(struct symbol* sym, struct symlist* next) {
+struct symlist* new_symlist(struct symbol* sym, struct symlist* next) {
 	return NULL;
 }
 
@@ -101,7 +101,7 @@ double eval(struct ast* a) {
 	return 0.0;
 }
 
-void tree_free(struct ast* a) {
+void free_tree(struct ast* a) {
 
 }
 
