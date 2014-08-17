@@ -1,7 +1,7 @@
 
 struct symbol {
 	char* name;
-	double value;
+	double val;
 	struct ast* func;
 	struct symlist* syms;
 };
@@ -47,13 +47,15 @@ struct ast {
 	struct ast* r;
 };
 
-struct fncall {
+//内置函数
+struct func {
 	int nt;
 	struct ast* l;
 	enum bifs ft;
 };
 
-struct ufncall {
+//用户定义函数
+struct call {
 	int t;
 	struct ast* l;
 	struct symbol* s;
@@ -99,5 +101,6 @@ void free_tree(struct ast* a);
 
 extern int yylineno;
 void yyerror(char*s, ...);
+
 
 

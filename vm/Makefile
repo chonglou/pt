@@ -2,9 +2,9 @@ cc = gcc
 #cc = clang
 target = /usr/local/bin
 
-cflags = -I.
+cflags = -I. -lm
 
-objects = main.o utils.o log.o message.o
+objects = main.o symlist.o nodes.o eval.o utils.o log.o message.o func.o
 analyser = objs/pt.lex.c
 parser = objs/pt.tab.c objs/pt.tab.h
 
