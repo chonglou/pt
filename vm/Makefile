@@ -1,19 +1,37 @@
 cc = gcc
 #cc = clang
 
-cflags = -O2 -s -I.
-#cflags = -I.
+cflags = -I.
+
+objects = utils.o log.o message.o
+analyser = objs/pt.lex.c
+parser = objs/pt.tab.c objs/pt.tab.h
+
 
 all: pt
 
 
-pt: pt.l pt.y pt.h main.c utils.c
-	bison -b objs/$@ -d $@.y
-	flex -o objs/$@.lex.c $@.l
-	$(cc) $(cflags) -o bin/$@  objs/$@.tab.c objs/$@.lex.c main.c utils.c
+pt: $(analyser) $(objects)
+	$(cc) -O2 -s $(cflags) -o bin/$@  objs/$@.tab.c ${analyser} main.c $(addprefix objs/, $(objects))
+
+
+$(analyser): $(parser) pt.h
+	flex -o objs/pt.lex.c pt.l
+
+
+$(parser): pt.y pt.h
+	bison -b objs/pt -d pt.y
 
 
 
+$(filter %.o, $(objects)): %.o: %.c
+	$(cc) -c $(cflags) $< -o objs/$@
+
+
+
+
+
+.PHONY: clean
 clean:
 	-rm objs/* bin/*
 

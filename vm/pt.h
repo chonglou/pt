@@ -33,6 +33,7 @@ void free_symlist(struct symlist* sl);
  * C 用户函数调用
  */
 
+//自定义函数
 enum bifs {
 	B_sqrt = 1,
 	B_exp,
